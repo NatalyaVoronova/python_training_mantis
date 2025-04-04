@@ -12,7 +12,9 @@ class ProjectHelper:
     def open_project_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("Manage").click()
+        # wd.implicitly_wait(3)
         wd.find_element_by_link_text("Manage Projects").click()
+        # wd.implicitly_wait(3)
 
     def get_project_list(self):
         if self.project_cache is None:
@@ -61,13 +63,12 @@ class ProjectHelper:
             wd.find_element_by_name(field_name).send_keys(text)
 
     def delete_project(self, project):
-
         wd = self.app.wd
         self.open_project_page()
         project_link = wd.find_element_by_xpath(f"//a[contains(@href, 'id={project.project_id}')]")
         project_link.click()
-        wd.implicitly_wait(3)
+        wd.implicitly_wait(2)
         wd.find_element_by_css_selector("input.button[value='Delete Project']").click()
-        wd.implicitly_wait(3)
+        wd.implicitly_wait(2)
         wd.find_element_by_css_selector("input.button[value='Delete Project']").click()
         self.project_cache = None

@@ -7,8 +7,9 @@ def random_string(prefix, maxlen):
     symbols = string.ascii_letters + string.digits
     return prefix + "".join([random.choice(symbols) for _ in range(random.randrange(maxlen))])
 
+
 def test_add_project(app):
-    app.session.login("administrator", "root")
+    # app.session.login("administrator", "root")
     old_list = app.project.get_project_list()
     project = Project(project_name=random_string("name", 10), description=random_string("description", 10))
     app.project.add_project(project)

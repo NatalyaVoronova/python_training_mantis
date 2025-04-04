@@ -9,7 +9,7 @@ def random_string(prefix, maxlen):
 
 
 def test_delete_project(app):
-    app.session.login("administrator", "root")
+    # app.session.login("administrator", "root")
     if app.project.count_projects() == 0:
         project = Project(project_name=random_string("name", 10), description=random_string("description", 10))
         app.project.add_project(project)
