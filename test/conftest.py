@@ -1,5 +1,7 @@
 import json
 import os.path
+import time
+
 import pytest
 import ftputil
 from fixture.application import Application
@@ -29,6 +31,7 @@ def app(request, config):
     if fixture is None or not fixture.is_valid():
         fixture = Application(browser=browser, base_url=config['web']['baseUrl'])
     fixture.session.ensure_login(username=config['webadmin']['username'], password=config['webadmin']['password'])
+    time.sleep(5)
     return fixture
 
 

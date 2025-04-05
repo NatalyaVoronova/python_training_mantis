@@ -1,4 +1,10 @@
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
 import re
+import time
+from time import sleep
+
 from model.project import Project
 
 
@@ -12,9 +18,7 @@ class ProjectHelper:
     def open_project_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("Manage").click()
-        # wd.implicitly_wait(3)
         wd.find_element_by_link_text("Manage Projects").click()
-        # wd.implicitly_wait(3)
 
     def get_project_list(self):
         if self.project_cache is None:
@@ -22,6 +26,8 @@ class ProjectHelper:
             self.open_project_page()
             # group_list = []
             self.project_cache = []
+            wait = WebDriverWait(self.app.wd, 10)
+            wait.until(EC.visibility_of_element_located((By.XPATH, "//table[@class='width100' and @cellspacing=1]")))
             projects = wd.find_elements_by_xpath("//table[3]/tbody/tr")[2:]
             for each in projects:
                 project = each.find_elements_by_css_selector("td")
