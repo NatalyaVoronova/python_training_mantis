@@ -5,7 +5,7 @@ class JamesHelper:
     def __init__(self, app):
         self.app = app
 
-    def ensure_user_exists(self, username, password):  # логин и пасворд пользователя
+    def ensure_user_exist(self, username, password):  # логин и пасворд пользователя
         james_config = self.app.config['james']
         session = JamesHelper.Session(
             james_config['host'], james_config['port'], james_config['username'], james_config['password'])  # 16'
