@@ -1,9 +1,8 @@
+import re
+
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.by import By
-import re
-import time
-from time import sleep
 
 from model.project import Project
 
@@ -15,15 +14,16 @@ class ProjectHelper:
 
     project_cache = None
 
-    def open_project_page(self):
+    def open_projects_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("Manage").click()
-        wd.find_element_by_link_text("Manage Projects").click()
+        if not wd.current_url.endswith("/manage_proj_page.php"):
+            wd.find_element_by_link_text("Manage").click()
+            wd.find_element_by_link_text("Manage Projects").click()
 
     def get_project_list(self):
         if self.project_cache is None:
             wd = self.app.wd
-            self.open_project_page()
+            self.open_projects_page()
             # group_list = []
             self.project_cache = []
             wait = WebDriverWait(self.app.wd, 10)
@@ -41,7 +41,7 @@ class ProjectHelper:
 
     def count_projects(self):
         wd = self.app.wd
-        self.open_project_page()
+        self.open_projects_page()
         try:
             l = len(wd.find_elements_by_xpath("//table[3]/tbody/tr")) - 2
         except:
@@ -50,7 +50,7 @@ class ProjectHelper:
 
     def add_project(self, project):
         wd = self.app.wd
-        self.open_project_page()
+        self.open_projects_page()
         wd.find_element_by_css_selector('[value="Create New Project"]').click()
         self.fill_form(project)
         wd.find_element_by_css_selector('[value="Add Project"]').click()
@@ -70,7 +70,7 @@ class ProjectHelper:
 
     def delete_project(self, project):
         wd = self.app.wd
-        self.open_project_page()
+        self.open_projects_page()
         project_link = wd.find_element_by_xpath(f"//a[contains(@href, 'id={project.project_id}')]")
         project_link.click()
         wd.implicitly_wait(2)

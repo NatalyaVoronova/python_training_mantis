@@ -19,3 +19,16 @@ def test_delete_project(app):
     new_list = app.project.get_project_list()
     old_list.remove(project)
     assert sorted(new_list, key=Project.id_or_max) == sorted(old_list, key=Project.id_or_max)
+
+
+def test_delete_project(app):
+    # app.session.login("administrator", "root")
+    if len(app.soap.get_project_list_soap())== 0:
+        project = Project(project_name=random_string("name", 10), description=random_string("description", 10))
+        app.project.add_project(project)
+    old_list = app.soap.get_project_list_soap()
+    project = random.choice(old_list)
+    app.project.delete_project(project)
+    new_list = app.soap.get_project_list_soap()
+    old_list.remove(project)
+    assert sorted(new_list, key=Project.id_or_max) == sorted(old_list, key=Project.id_or_max)
